@@ -13,19 +13,40 @@ export const FieldModel=()=>{
 
                         <div className="flex justify-end mb-4">
                             <div className="flex items-center space-x-2 max-w-md">
-                                <input
-                                    type="text"
-                                    id="searchInput"
-                                    className="form-input w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Search Field Code: FLD-00"
-                                    aria-label="Search"
-                                />
-                                <button
-                                    className="btn text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 px-4 py-2 rounded-full flex items-center hover:shadow-lg hover:shadow-gray-400 transition-all duration-300 hover:scale-110"
-                                    id="searchButton">
-                                    Search
-                                    <i className="fas fa-search ml-2"></i>
-                                </button>
+                                <div className="relative">
+                                    <div
+                                        className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <svg
+                                            className="w-5 h-5 text-gray-500 dark:text-gray-400"
+                                            aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 20 20"
+                                        >
+                                            <path
+                                                stroke="currentColor"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                                            />
+                                        </svg>
+                                    </div>
+                                    <input
+                                        type="search"
+                                        id="default-search"
+                                        className="w-full focus:outline-none p-4 pl-12 pr-20 text-md text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 hover:border-blue-500 transition-all duration-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Search Code"
+                                        required
+                                    />
+                                    <button
+                                        type="submit"
+                                        className="absolute right-2.5 bottom-2.5 text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 transition-all duration-300 dark:bg-blue-600 dark:hover:from-blue-700 dark:hover:to-blue-900 dark:focus:ring-blue-800"
+                                    >
+                                        Search
+                                    </button>
+                                </div>
+
                             </div>
                         </div>
 
@@ -33,7 +54,7 @@ export const FieldModel=()=>{
 
                             <div>
                                 <label htmlFor="fieldCode"
-                                       className="block text-gray-700 text-sm font-medium mb-1">Code</label>
+                                       className="block text-xl text-white font-medium mb-1">Code</label>
                                 <input
                                     type="text"
                                     id="fieldCode"
@@ -61,9 +82,10 @@ export const FieldModel=()=>{
                                 <input
                                     type="text"
                                     id="fieldLocation"
-                                    className="form-input w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500"
+                                    className="form-input w-full border border-gray-300 rounded-md px-4 py-2 focus:border-white focus:ring-0 focus:outline-none"
                                     placeholder="Ex: 38.8951° latitude, -77.0364° longitude"
                                 />
+
                             </div>
 
                             <div>
