@@ -1,0 +1,22 @@
+.page-title {
+    position: relative;
+    text-transform: uppercase; /* Makes the text uppercase for emphasis */
+    letter-spacing: 0.1em; /* Increases spacing between letters for a professional look */
+    background: linear-gradient(to right, #12202e, #5077ba); /* Blue gradient text */
+    -webkit-background-clip: text; /* Clips the background gradient to the text */
+    -webkit-text-fill-color: transparent; /* Makes the text color transparent to show the gradient */
+    padding-bottom: 1rem; /* Adds space below the title */
+}
+
+.page-title::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    width: 5rem;
+    height: 0.4rem;
+    background-color: #354b7e; /* Adds a blue accent underline */
+    border-radius: 9999px; /* Creates a pill shape */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow for depth */
+}
