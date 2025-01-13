@@ -20,3 +20,8 @@
     border-radius: 9999px; /* Creates a pill shape */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow for depth */
 }
+select {
+    appearance: none; /* Removes browser-specific styles */
+    outline: none; /* Removes default outline */
+}
+

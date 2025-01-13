@@ -4,14 +4,14 @@ export const FieldModel=()=>{
 
         <>
             <div className="min-h-screen bg-gradient-to-r from-teal-500 to-gray-800">
-                <h1 className="page-title bg-blue-600 text-5xl font-extrabold text-center text-gray-900 mb-6">
+                <h1 className="page-title bg-blue-600 pt-6 text-5xl font-extrabold text-center text-gray-900 mb-4">
                     Field Management
                 </h1>
                 <div className="min-h-screen bg-gradient-to-r from-teal-500 to-gray-800 p-6">
 
                     <div className="p-6 bg-gradient-to-r from-gray-800 to-gray-800 rounded-md shadow-md">
 
-                        <div className="flex justify-end mb-4">
+                        <div className="flex justify-end mb-8 mt-5">
                             <div className="flex items-center space-x-2 max-w-md">
                                 <div className="relative">
                                     <div
@@ -50,99 +50,87 @@ export const FieldModel=()=>{
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-4 gap-4 mb-4">
+                        <div className="grid grid-cols-4 gap-10 mb-4">
 
                             <div>
                                 <label htmlFor="fieldCode"
-                                       className="block text-xl text-white font-medium mb-1">Code</label>
-                                <input
-                                    type="text"
-                                    id="fieldCode"
-                                    className="form-input w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500"
-                                    placeholder="FLD-001"
+                                       className="block text-xl text-white font-medium mb-1">Code
+                                </label>
+                                <input type="text" placeholder="Field-Code"
+                                       className="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 focus:outline-none "
                                 />
+
                                 <small id="fieldCodeFeedback" className="text-red-500 text-sm hidden">Invalid ID format!
                                     Use format FLD-00.</small>
                             </div>
 
                             <div>
                                 <label htmlFor="fieldName"
-                                       className="block text-gray-700 text-sm font-medium mb-1">Name</label>
-                                <input
-                                    type="text"
-                                    id="fieldName"
-                                    className="form-input w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Ex: Nebula"
+                                       className="block text-xl text-white font-medium mb-1">Name</label>
+                                <input type="text" placeholder="Ex: Nebula"
+                                       className="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 focus:outline-none "
                                 />
                             </div>
 
                             <div>
                                 <label htmlFor="fieldLocation"
-                                       className="block text-gray-700 text-sm font-medium mb-1">Location</label>
-                                <input
-                                    type="text"
-                                    id="fieldLocation"
-                                    className="form-input w-full border border-gray-300 rounded-md px-4 py-2 focus:border-white focus:ring-0 focus:outline-none"
-                                    placeholder="Ex: 38.8951° latitude, -77.0364° longitude"
+                                       className="block text-xl text-white font-medium mb-1">Location</label>
+                                <input type="text" placeholder="Location Ex:Galle"
+                                       className="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 focus:outline-none "
                                 />
 
                             </div>
 
                             <div>
-                                <label htmlFor="fieldSize" className="block text-gray-700 text-sm font-medium mb-1">Field
+                                <label htmlFor="fieldSize" className="block text-xl text-white font-medium mb-1">Field
                                     Size</label>
-                                <input
-                                    type="number"
-                                    id="fieldSize"
-                                    className="form-input w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Extent of the field (Preferred Sq. m)"
+                                <input type="text" placeholder="Size(m)"
+                                       className="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 focus:outline-none "
                                 />
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-4 gap-4 mb-4">
+                        <div className="grid grid-cols-4 gap-8 mb-4 mt-14">
 
                             <div>
                                 <label htmlFor="monitorLogDropdown"
-                                       className="block text-gray-700 text-sm font-medium mb-1">Monitor Log</label>
-                                <select
-                                    id="monitorLogDropdown"
-                                    className="form-select w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500"
-                                >
-                                    <option value="" disabled selected>Select a Monitor-Log</option>
+                                       className="block text-xl text-white font-medium mb-1">Monitor Log</label>
+                                <select id="LogId"
+                                        className="bg-gray-100 border-none p-3.5 focus:ring-2 focus:ring-teal-500  text-gray-900 text-sm rounded-lg focus:outline-none: focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white  ">
+                                    <option selected>Choose Log ID</option>
+                                    <option value="US">Log-001</option>
+                                    <option value="CA">Log-002</option>
+                                    <option value="FR">Log-003</option>
+                                    <option value="DE">Log-004</option>
                                 </select>
                             </div>
 
                             <div>
                                 <label htmlFor="staffDropdown1"
-                                       className="block text-gray-700 text-sm font-medium mb-1">Staff Member 1</label>
-                                <select
-                                    id="staffDropdown1"
-                                    className="form-select w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500"
-                                >
-                                    <option value="" disabled selected>Select Staff1</option>
+                                       className="block text-xl text-white font-medium mb-1">Staff Member 1</label>
+                                <select id="LogId"
+                                        className="bg-gray-100 border-none p-3.5 focus:ring-2 focus:ring-teal-500  text-gray-900 text-sm rounded-lg focus:outline-none: focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white  ">
+                                    <option selected>Choose Staff ID</option>
+                                    <option value="US">Staff-001</option>
+                                    <option value="CA">Staff-002</option>
+                                    <option value="FR">Log-003</option>
+                                    <option value="DE">Log-004</option>
                                 </select>
                             </div>
 
                             <div>
                                 <label htmlFor="fieldImage1"
-                                       className="block text-gray-700 text-sm font-medium mb-1">Details</label>
-                                <input
-                                    type="text"
-                                    id="fieldImage1"
-                                    className="form-input w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Field details"
+                                       className="block text-xl text-white font-medium mb-1">Details</label>
+                                <input type="text" placeholder="Enter Details"
+                                       className="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 focus:outline-none "
                                 />
                             </div>
 
                             <div>
                                 <label htmlFor="fieldImage2"
-                                       className="block text-gray-700 text-sm font-medium mb-1">Category</label>
-                                <input
-                                    type="text"
-                                    id="fieldImage2"
-                                    className="form-input w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Field Category"
+                                       className="block text-xl text-white font-medium mb-1">Category</label>
+                                <input type="text" placeholder="See Category"
+                                       className="mb-6 bg-gray-100 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 focus:outline-none "
                                 />
                             </div>
                         </div>
@@ -150,31 +138,27 @@ export const FieldModel=()=>{
                         <div className="flex space-x-3">
                             <button
                                 type="button"
-                                id="AddField"
-                                className="bg-gradient-to-r from-green-400 to-green-600 border-2 border-transparent text-white px-4 py-2 rounded-md transition-all duration-300 hover:bg-gradient-to-r hover:from-green-500 hover:to-green-700 hover:border-green-700"
+                                className="text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl px-8 focus:outline-none focus:ring-4 focus:ring-green-200 focus:bg-gradient-to-br focus:from-yellow-400 focus:to-red-600 hover:scale-105 transform transition-all duration-300 ease-in-out font-medium rounded-xl text-sm py-2.5 text-center me-2 mb-2 shadow-lg hover:shadow-2xl"
                             >
                                 Add
                             </button>
                             <button
                                 type="button"
-                                id="deleteField"
-                                className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-                            >
-                                Delete
-                            </button>
-                            <button
-                                type="button"
-                                id="updateField"
-                                className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600"
+                                className="text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl px-6 focus:outline-none focus:ring-4 focus:ring-green-200 focus:bg-gradient-to-br focus:from-yellow-400 focus:to-red-600 hover:scale-105 transform transition-all duration-300 ease-in-out font-medium rounded-xl text-sm py-2.5 text-center me-2 mb-2 shadow-lg hover:shadow-2xl"
                             >
                                 Update
                             </button>
                             <button
                                 type="button"
-                                id="clearField"
-                                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                                className="text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl px-6 focus:outline-none focus:ring-4 focus:ring-green-200 focus:bg-gradient-to-br focus:from-yellow-400 focus:to-red-600 hover:scale-105 transform transition-all duration-300 ease-in-out font-medium rounded-xl text-sm py-2.5 text-center me-2 mb-2 shadow-lg hover:shadow-2xl"
                             >
-                                Reset
+                                Delete
+                            </button>
+                            <button
+                                type="button"
+                                className="text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl px-6 focus:outline-none focus:ring-4 focus:ring-green-200 focus:bg-gradient-to-br focus:from-yellow-400 focus:to-red-600 hover:scale-105 transform transition-all duration-300 ease-in-out font-medium rounded-xl text-sm py-2.5 text-center me-2 mb-2 shadow-lg hover:shadow-2xl"
+                            >
+                                Clear
                             </button>
                         </div>
                     </div>
