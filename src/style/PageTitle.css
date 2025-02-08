@@ -24,4 +24,8 @@ select {
     appearance: none; /* Removes browser-specific styles */
     outline: none; /* Removes default outline */
 }
+.page {
+    height: 90vh; /* Full viewport height */
+
+}
 

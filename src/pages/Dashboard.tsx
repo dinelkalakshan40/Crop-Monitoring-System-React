@@ -1,4 +1,4 @@
-import {FaChartLine, FaTasks, FaUsers} from "react-icons/fa";
+import {FaChartLine, FaCogs, FaTasks, FaUsers} from "react-icons/fa";
 
 import Card from "../components/Card.tsx";
 
@@ -42,8 +42,15 @@ export function Dashboard() {
             },
             {
                 label: "Staff Assigned",
-                data: [8, 12, 14, 16, 20, 25],
+                data: [8, 12, 14, 16, 18, 22],
                 borderColor: "rgba(54, 162, 235, 1)",
+                backgroundColor: "rgba(54, 162, 235, 0.2)",
+                tension: 0.4, // Smooth line
+            },
+            {
+                label: "Crop data",
+                data: [5, 9, 13, 20, 26, 27],
+                borderColor: "rgb(106,141,186)",
                 backgroundColor: "rgba(54, 162, 235, 0.2)",
                 tension: 0.4, // Smooth line
             },
@@ -66,10 +73,10 @@ export function Dashboard() {
 
 // Bar chart data and options
     const barChartData = {
-        labels: ["Field A", "Field B", "Field C", "Field D", "Field E"],
+        labels: ["Field ", "Crop", "Staff", "Equipment"],
         datasets: [
             {
-                label: "Crops Planted",
+                label: "Filed Area",
                 data: [120, 150, 100, 180, 200],
                 backgroundColor: [
                     "rgba(255, 99, 132, 0.6)",
@@ -94,6 +101,7 @@ export function Dashboard() {
                 borderColor: "rgba(255, 159, 64, 1)",
                 borderWidth: 1,
             },
+
         ],
     };
 
@@ -106,14 +114,14 @@ export function Dashboard() {
             },
             title: {
                 display: true,
-                text: "Crop and Vehicle Usage by Field",
+                text: "Crop,Vehicle,Staff Usage by Field",
             },
         },
     };
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
             {/* Main Content */}
-            <main className="p-8">
+            <main className="p-8 ml-6 mr-6">
                 <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
                     Welcome Back!
                 </h1>
@@ -121,9 +129,10 @@ export function Dashboard() {
                 {/* Cards Section */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
                     <Card icon={<FaUsers/>} title="Users" value="1,234"/>
-                    <Card icon={<FaChartLine/>} title="Growth" value="12.5%"/>
-                    <Card icon={<FaDollarSign/>} title="Revenue" value="$10K"/>
-                    <Card icon={<FaTasks/>} title="Tasks" value="76%"/>
+                    <Card icon={<FaChartLine/>} title="Field" value="12.5%"/>
+                    <Card icon={<FaDollarSign/>} title="Crop" value="$10K"/>
+                    <Card icon={<FaTasks/>} title="Staff" value="76%"/>
+                    <Card icon={<FaCogs />} title="Euiqment" value="232"/>
                 </div>
 
                 {/* Charts Section */}
