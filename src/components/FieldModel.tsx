@@ -1,8 +1,8 @@
 import "../style/PageTitle.css"
 import {FaEraser, FaPlus, FaSave, FaSearch, FaTrash} from "react-icons/fa";
-import {useState} from "react";
+import React, {useState} from "react";
 import {useDispatch} from "react-redux";
-import {saveField} from "../reducers/FieldSlice.ts";
+import {deleteField, saveField, updateField} from "../reducers/FieldSlice.ts";
 import {AppDispatch} from "../store/store.ts";
 import {toast} from "react-toastify";
 
@@ -22,6 +22,7 @@ export const FieldModel = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    //submit
     const handleSubmit =async (e: React.FormEvent) => {
         e.preventDefault();
         try {
@@ -33,9 +34,31 @@ export const FieldModel = () => {
         }
     };
 
+    //update
+    const handelUpdate=async (e:React.FormEvent)=>{
+        e.preventDefault();
+        try {
+            await dispatch(updateField(formData));
+            toast.success("Field updated SuccessFully");
+            setFormData({ code: "", name: "", location: "", fieldSize: "", category: "" });
+        }catch {
+            toast.error("Failed to update field Data! ❌")
+        }
+    }
     const handleClear = () => {
         setFormData({ code: "", name: "", location: "", fieldSize: "", category: "" });
     };
+    //delete field
+    const handleDelete =async (e:React.FormEvent)=>{
+        e.preventDefault();
+        try {
+            await dispatch(deleteField(formData.code));
+            toast.success("Field deleted successfully ✅");
+            handleClear();
+        } catch {
+            toast.error("Failed to delete field ❌");
+        }
+    }
 
     return (
         <>
@@ -121,7 +144,7 @@ export const FieldModel = () => {
                                 className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg flex items-center gap-2 transition duration-300">
                                 <FaPlus/> Add Field
                             </button>
-                            <button
+                            <button onClick={handelUpdate}
                                 className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg flex items-center gap-2 transition duration-300">
                                 <FaSave/> Update
                             </button>
@@ -157,7 +180,7 @@ export const FieldModel = () => {
                                 <td className="p-4 border">123</td>
                                 <td className="p-4 border">Sample Category</td>
                                 <td className="p-4 border-r-2 border-solid border-gray-300 flex gap-2 justify-center">
-                                    <button
+                                    <button onClick={handleDelete}
                                         className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition duration-300 flex flex-row-reverse items-center">
                                         <FaTrash/> Delete
                                     </button>
