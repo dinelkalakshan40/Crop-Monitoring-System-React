@@ -4,6 +4,7 @@ import {useState} from "react";
 import {useDispatch} from "react-redux";
 import {saveField} from "../reducers/FieldSlice.ts";
 import {AppDispatch} from "../store/store.ts";
+import {toast} from "react-toastify";
 
 
 
@@ -21,11 +22,15 @@ export const FieldModel = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit =async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Collected Data:", formData);
-        dispatch(saveField(formData));
-        setFormData({ code: "", name: "", location: "", fieldSize: "", category: "" });
+        try {
+            await dispatch(saveField(formData));
+            toast.success("Field saved SuccessFully");
+            setFormData({ code: "", name: "", location: "", fieldSize: "", category: "" });
+        }catch {
+            toast.error("Failed to save field! ❌")
+        }
     };
 
     const handleClear = () => {
