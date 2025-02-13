@@ -43,7 +43,7 @@ export const updateField = createAsyncThunk(
     }
 )
 //delete Field
-export const deleteField=createAsyncThunk(
+export const deleteField = createAsyncThunk(
     'field/deleteField',
     async (fieldCode: string) => {
         console.log('deleteField with ID:', fieldCode);
@@ -57,6 +57,21 @@ export const deleteField=createAsyncThunk(
         }
     }
 )
+//getAll Field
+export const getAllFields = createAsyncThunk(
+    "field/getAllFields",
+    async () => {
+        console.log("Fetching all fields...");
+        try {
+            const response = await api.get("field/getAllFields");
+            console.log("Fetched fields:", response.data);
+            return response.data;
+        } catch (error) {
+            console.log("Error fetching fields:", error);
+            throw new Error("Failed to fetch fields");
+        }
+    }
+);
 const fieldSlice = createSlice({
     name: 'field',
     initialState,
@@ -67,6 +82,7 @@ const fieldSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            //saveField
             .addCase(saveField.pending, (state) => {
                 state.status = 'loading';
                 state.error = null;
@@ -107,8 +123,20 @@ const fieldSlice = createSlice({
             .addCase(deleteField.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message || 'Failed to delete field';
-            });
-
+            })
+            //getAllField
+            .addCase(getAllFields.pending, (state) => {
+                state.status = "loading";
+                state.error = null;
+            })
+            .addCase(getAllFields.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.fields = action.payload.data;
+            })
+            .addCase(getAllFields.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload as string;
+            })
 
     },
 });

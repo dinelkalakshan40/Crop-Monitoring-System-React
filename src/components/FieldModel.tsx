@@ -1,16 +1,20 @@
 import "../style/PageTitle.css"
 import {FaEraser, FaPlus, FaSave, FaSearch, FaTrash} from "react-icons/fa";
-import React, {useState} from "react";
-import {useDispatch} from "react-redux";
-import {deleteField, saveField, updateField} from "../reducers/FieldSlice.ts";
-import {AppDispatch} from "../store/store.ts";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {deleteField, getAllFields, saveField, updateField} from "../reducers/FieldSlice.ts";
+import {AppDispatch, RootState} from "../store/store.ts";
 import {toast} from "react-toastify";
+import {Field} from "../models/Field.ts";
 
 
 
 export const FieldModel = () => {
 
     const dispatch=useDispatch<AppDispatch>();
+
+    const fieldState = useSelector((state: RootState) => state.field.fields);
+
     const[formData,setFormData]=useState({
         code:"",
         name: "",
@@ -18,8 +22,23 @@ export const FieldModel = () => {
         fieldSize: "",
         category: "",
     })
+
+    useEffect(() => {
+        dispatch(getAllFields());  // Load fields when component mounts
+    }, [dispatch]);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+    //setFormData
+    const handleRowClick = (field: Field) => {
+        setFormData({
+            code: field.code,
+            name: field.name,
+            location: field.location,
+            fieldSize: field.fieldSize,
+            category: field.category,
+        });
     };
 
     //submit
@@ -45,6 +64,7 @@ export const FieldModel = () => {
             toast.error("Failed to update field Data! ❌")
         }
     }
+    //clearAll
     const handleClear = () => {
         setFormData({ code: "", name: "", location: "", fieldSize: "", category: "" });
     };
@@ -173,45 +193,24 @@ export const FieldModel = () => {
                             </tr>
                             </thead>
                             <tbody>
-                            <tr className="border text-gray-700 dark:text-white">
-                                <td className="p-4 border">Sample Code</td>
-                                <td className="p-4 border">Sample Name</td>
-                                <td className="p-4 border">Sample Location</td>
-                                <td className="p-4 border">123</td>
-                                <td className="p-4 border">Sample Category</td>
-                                <td className="p-4 border-r-2 border-solid border-gray-300 flex gap-2 justify-center">
-                                    <button onClick={handleDelete}
-                                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition duration-300 flex flex-row-reverse items-center">
-                                        <FaTrash/> Delete
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr className="border text-gray-700 dark:text-white">
-                                <td className="p-4 border">Sample Code</td>
-                                <td className="p-4 border">Sample Name</td>
-                                <td className="p-4 border">Sample Location</td>
-                                <td className="p-4 border">123</td>
-                                <td className="p-4 border">Sample Category</td>
-                                <td className="p-4 border-r-2 border-solid border-gray-300 flex gap-2 justify-center">
-                                    <button
-                                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition duration-300 flex flex-row-reverse items-center">
-                                        <FaTrash/> Delete
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr className="border text-gray-700 dark:text-white">
-                                <td className="p-4 border">Sample Code</td>
-                                <td className="p-4 border">Sample Name</td>
-                                <td className="p-4 border">Sample Location</td>
-                                <td className="p-4 border">123</td>
-                                <td className="p-4 border">Sample Category</td>
-                                <td className="p-4 border-r-2 border-solid border-gray-300 flex gap-2 justify-center">
-                                    <button
-                                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition duration-300 flex flex-row-reverse items-center">
-                                        <FaTrash/> Delete
-                                    </button>
-                                </td>
-                            </tr>
+                            {fieldState.map((field) => (
+                                <tr key={field.code} className="border text-gray-700 dark:text-white"
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => handleRowClick(field)} >
+                                    <td className="p-4 border">{field.code}</td>
+                                    <td className="p-4 border">{field.name}</td>
+                                    <td className="p-4 border">{field.location}</td>
+                                    <td className="p-4 border">{field.fieldSize}</td>
+                                    <td className="p-4 border">{field.category}</td>
+                                    <td className="p-4 border-r-2 border-solid border-gray-300 flex gap-2 justify-center">
+                                        <button onClick={handleDelete}
+                                                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition duration-300 flex flex-row-reverse items-center">
+                                            <FaTrash/> Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+
                             </tbody>
                         </table>
                     </div>
