@@ -72,6 +72,20 @@ export const getAllFields = createAsyncThunk(
         }
     }
 );
+export const getFieldByCode = createAsyncThunk(
+    'field/getFieldByCode',
+    async (code: string) => {
+        console.log('Fetching Field with Code:', code);
+        try {
+            const response = await api.get(`field/getFieldByCode/${code}`);
+            console.log('Field data received:', response.data);
+            return response.data; // Return the field data
+        } catch (error) {
+            console.log('Error in getFieldByCode:', error);
+            throw new Error('Failed to fetch field by code');
+        }
+    }
+);
 const fieldSlice = createSlice({
     name: 'field',
     initialState,
@@ -137,6 +151,19 @@ const fieldSlice = createSlice({
                 state.status = 'failed';
                 state.error = action.payload as string;
             })
+            //getById
+            .addCase(getFieldByCode.pending, (state) => {
+                state.status = "loading";
+                state.error = null;
+            })
+            .addCase(getFieldByCode.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.fields = [action.payload];
+            })
+            .addCase(getFieldByCode.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload as string;
+            });
 
     },
 });

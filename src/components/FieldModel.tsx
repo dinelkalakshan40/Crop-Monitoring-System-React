@@ -2,33 +2,34 @@ import "../style/PageTitle.css"
 import {FaEraser, FaPlus, FaSave, FaSearch, FaTrash} from "react-icons/fa";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteField, getAllFields, saveField, updateField} from "../reducers/FieldSlice.ts";
+import {deleteField, getAllFields, getFieldByCode, saveField, updateField} from "../reducers/FieldSlice.ts";
 import {AppDispatch, RootState} from "../store/store.ts";
 import {toast} from "react-toastify";
 import {Field} from "../models/Field.ts";
-
+import {showConfirmationModal} from "./Alert.tsx";
 
 
 export const FieldModel = () => {
 
-    const dispatch=useDispatch<AppDispatch>();
+    const dispatch = useDispatch<AppDispatch>();
 
     const fieldState = useSelector((state: RootState) => state.field.fields);
 
-    const[formData,setFormData]=useState({
-        code:"",
+    const [formData, setFormData] = useState({
+        code: "",
         name: "",
         location: "",
         fieldSize: "",
         category: "",
     })
 
+    //for load table
     useEffect(() => {
-        dispatch(getAllFields());  // Load fields when component mounts
+        dispatch(getAllFields());  // Load fields
     }, [dispatch]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData({...formData, [e.target.name]: e.target.value});
     };
     //setFormData
     const handleRowClick = (field: Field) => {
@@ -42,43 +43,88 @@ export const FieldModel = () => {
     };
 
     //submit
-    const handleSubmit =async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
         try {
             await dispatch(saveField(formData));
             toast.success("Field saved SuccessFully");
-            setFormData({ code: "", name: "", location: "", fieldSize: "", category: "" });
-        }catch {
+            setFormData({code: "", name: "", location: "", fieldSize: "", category: ""});
+            await dispatch(getAllFields());
+        } catch {
             toast.error("Failed to save field! ❌")
         }
     };
 
     //update
-    const handelUpdate=async (e:React.FormEvent)=>{
-        e.preventDefault();
+    const handelUpdate = async () => {
         try {
             await dispatch(updateField(formData));
             toast.success("Field updated SuccessFully");
-            setFormData({ code: "", name: "", location: "", fieldSize: "", category: "" });
-        }catch {
+            setFormData({code: "", name: "", location: "", fieldSize: "", category: ""});
+            await dispatch(getAllFields());
+        } catch {
             toast.error("Failed to update field Data! ❌")
         }
     }
     //clearAll
     const handleClear = () => {
-        setFormData({ code: "", name: "", location: "", fieldSize: "", category: "" });
+        setFormData({code: "", name: "", location: "", fieldSize: "", category: ""});
     };
+
     //delete field
-    const handleDelete =async (e:React.FormEvent)=>{
-        e.preventDefault();
-        try {
-            await dispatch(deleteField(formData.code));
-            toast.success("Field deleted successfully ✅");
-            handleClear();
-        } catch {
-            toast.error("Failed to delete field ❌");
+    const handleDelete = async (code: string) => {
+        // Show confirmation alter
+        const isConfirmed = await showConfirmationModal({
+            title: "Delete Field?",
+            text: "This action is irreversible. Do you want to proceed?",
+            confirmText: "Yes, Delete",
+            cancelText: "No, Keep it",
+        })
+
+        if (isConfirmed) {
+            try {
+
+                await dispatch(deleteField(code));
+                toast.success("Field deleted successfully ✅");
+
+                handleClear();
+
+                await dispatch(getAllFields());
+            } catch  {
+                toast.error("Failed to delete field ❌");
+            }
+        } else {
+            toast.info("Field deletion canceled.");
         }
-    }
+    };
+    //seach field
+    const handleSearch = async () => {
+        try {
+            if (!formData.code) {
+                toast.error("Please enter a field code to search! ❌");
+                return;
+            }
+
+            await dispatch(getFieldByCode(formData.code));
+            const field = fieldState.find((field) => field.code === formData.code);
+            // Check if the field was found
+            if (field) {
+                setFormData({
+                    code: field.code,
+                    name: field.name,
+                    location: field.location,
+                    fieldSize: field.fieldSize,
+                    category: field.category,
+                });
+                await dispatch(getAllFields());
+                toast.success("Field found and details loaded ✅");
+            } else {
+                toast.error("No field found with this code ❌");
+            }
+        } catch  {
+            toast.error("Failed to fetch field details! ❌");
+        }
+    };
+
 
     return (
         <>
@@ -92,12 +138,14 @@ export const FieldModel = () => {
                         <div className="flex-grow flex flex-col">
                             <label className="text-gray-700 dark:text-white mb-1">Search Field:</label>
                             <input
-                                type="text"
+                                type="text" value={formData.code}
+                                onChange={handleChange}
+                                name="code"
                                 placeholder="Search Field..."
                                 className="w-full p-3 border rounded-lg text-gray-700 dark:text-white bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
-                        <button
+                        <button onClick={handleSearch}
                             className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-3 rounded-lg flex items-center gap-2 transition duration-300">
                             <FaSearch/> Search
                         </button>
@@ -161,15 +209,15 @@ export const FieldModel = () => {
                         {/* Buttons */}
                         <div className="flex justify-end gap-4 mt-6">
                             <button onClick={handleSubmit}
-                                className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg flex items-center gap-2 transition duration-300">
+                                    className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg flex items-center gap-2 transition duration-300">
                                 <FaPlus/> Add Field
                             </button>
                             <button onClick={handelUpdate}
-                                className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg flex items-center gap-2 transition duration-300">
+                                    className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg flex items-center gap-2 transition duration-300">
                                 <FaSave/> Update
                             </button>
                             <button onClick={handleClear}
-                                className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg flex items-center gap-2 transition duration-300">
+                                    className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg flex items-center gap-2 transition duration-300">
                                 <FaEraser/> Clear
                             </button>
                         </div>
@@ -195,15 +243,15 @@ export const FieldModel = () => {
                             <tbody>
                             {fieldState.map((field) => (
                                 <tr key={field.code} className="border text-gray-700 dark:text-white"
-                                    style={{ cursor: 'pointer' }}
-                                    onClick={() => handleRowClick(field)} >
+                                    style={{cursor: 'pointer'}}
+                                    onClick={() => handleRowClick(field)}>
                                     <td className="p-4 border">{field.code}</td>
                                     <td className="p-4 border">{field.name}</td>
                                     <td className="p-4 border">{field.location}</td>
                                     <td className="p-4 border">{field.fieldSize}</td>
                                     <td className="p-4 border">{field.category}</td>
                                     <td className="p-4 border-r-2 border-solid border-gray-300 flex gap-2 justify-center">
-                                        <button onClick={handleDelete}
+                                        <button  onClick={() => handleDelete(field.code)}
                                                 className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition duration-300 flex flex-row-reverse items-center">
                                             <FaTrash/> Delete
                                         </button>
