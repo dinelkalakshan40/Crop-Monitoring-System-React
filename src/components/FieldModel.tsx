@@ -106,7 +106,7 @@ export const FieldModel = () => {
 
             await dispatch(getFieldByCode(formData.code));
             const field = fieldState.find((field) => field.code === formData.code);
-            // Check if the field was found
+
             if (field) {
                 setFormData({
                     code: field.code,
