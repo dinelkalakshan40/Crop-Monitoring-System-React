@@ -82,12 +82,9 @@ export const FieldModel = () => {
 
         if (isConfirmed) {
             try {
-
                 await dispatch(deleteField(code));
                 toast.success("Field deleted successfully ✅");
-
                 handleClear();
-
                 await dispatch(getAllFields());
             } catch  {
                 toast.error("Failed to delete field ❌");
@@ -96,7 +93,7 @@ export const FieldModel = () => {
             toast.info("Field deletion canceled.");
         }
     };
-    //seach field
+    //search field
     const handleSearch = async () => {
         try {
             if (!formData.code) {
