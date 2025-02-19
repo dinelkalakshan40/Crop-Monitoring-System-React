@@ -5,7 +5,6 @@ import api from "../api/ApiService.ts";
 export const initialState: Staff[] = [];
 
 
-
 export const saveStaff = createAsyncThunk(
     'staff/saveStaff',
     async (staffData: Staff) => {
@@ -47,11 +46,25 @@ export const getAllStaff = createAsyncThunk(
             }
 
             return staffList;
-        } catch{
+        } catch {
             throw new Error("Failed to fetch fields");
         }
     }
 );
+export const deleteStaff = createAsyncThunk(
+    "staff/deleteStaff",
+    async (staffId: string) => {
+        console.log("🗑️ Deleting staff with ID:", staffId);
+        try {
+            await api.delete(`staff/${staffId}`);
+            console.log("✅ Staff deleted successfully:", staffId);
+            return staffId; // Return the ID to remove it from the state
+        } catch (error) {
+            console.error("❌ deleteStaff error:", error);
+        }
+    }
+);
+
 
 const staffSlice = createSlice({
     name: 'staff',
@@ -105,6 +118,17 @@ const staffSlice = createSlice({
 
             .addCase(getAllStaff.rejected, (_state, action) => {
                 console.log('❌ getAllStaff failed:', action.payload as string);
+            })
+            //delete Staff
+            .addCase(deleteStaff.pending, () => {
+                console.log("⏳ deleteStaff pending...");
+            })
+            .addCase(deleteStaff.fulfilled, (state, action: PayloadAction<string|undefined>) => {
+                console.log("✅ deleteStaff success:", action.payload);
+                return state.filter((staff) => staff.id !== action.payload); // Remove deleted staff
+            })
+            .addCase(deleteStaff.rejected, (_state, action) => {
+                console.error("❌ deleteStaff failed:", action.payload);
             });
 
 

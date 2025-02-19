@@ -1,10 +1,11 @@
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../store/store.ts";
 import React, {useEffect, useState} from "react";
-import {getAllStaff, saveStaff, updateStaff} from "../reducers/StaffSlice.ts";
+import {deleteStaff, getAllStaff, saveStaff, updateStaff} from "../reducers/StaffSlice.ts";
 import {FaEraser, FaPlus, FaSave, FaSearch, FaTrash} from "react-icons/fa";
 import Staff from "../models/Staff.ts";
 import {toast} from "react-toastify";
+import {getAllFields} from "../reducers/FieldSlice.ts";
 
 export const StaffModel = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -51,13 +52,15 @@ export const StaffModel = () => {
         setStaffData({id: '', name: '', designation: '', gender: '', dob: '', contact: '', role: '', fieldCode: ''});
     };
 
-    // const handleDelete = (id: string) => {
-    //     dispatch(deleteStaff(id));
-    // };
+    const handleDelete = (id: string) => {
+        dispatch(deleteStaff(id));
+        handleClear();
+        dispatch(getAllFields());
+    };
 
-    // const handleRowClick = (staff: any) => {
-    //     setFormData(staff);
-    // };
+    const handleRowClick = (staff: Staff) => {
+        setStaffData(staff);
+    };
 
 
     return (
@@ -144,7 +147,7 @@ export const StaffModel = () => {
                             </thead>
                             <tbody>
                             {staffState.map((staff) => (
-                                <tr key={staff.id} className="border text-gray-700 dark:text-white"
+                                <tr key={staff.id} onClick={() => handleRowClick(staff)} style={{cursor: 'pointer'}} className="border text-gray-700 dark:text-white"
                                     >
                                     <td className="p-3 border">{staff.id}</td>
                                     <td className="p-3 border">{staff.name}</td>
@@ -155,7 +158,7 @@ export const StaffModel = () => {
                                     <td className="p-3 border">{staff.role}</td>
                                     <td className="p-3 border">{staff.fieldCode}</td>
                                     <td className="p-3 border">
-                                        <button
+                                        <button onClick={()=>handleDelete(staff.id)}
                                                 className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition duration-300 flex flex-row-reverse items-center"><FaTrash/> Delete
                                         </button>
                                     </td>
