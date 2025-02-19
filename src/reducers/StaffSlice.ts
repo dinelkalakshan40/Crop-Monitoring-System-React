@@ -32,6 +32,27 @@ export const updateStaff = createAsyncThunk(
     }
 )
 
+export const getAllStaff = createAsyncThunk(
+    'staff/getAll',
+    async () => {
+        console.log('✅ Fetching all staff');
+
+        try {
+            const response = await api.get('staff/allStaff');
+            const staffList = response.data?.data ?? response.data;
+
+            if (!Array.isArray(staffList)) {
+                console.error("❌ API error: Expected an array but got", staffList);
+                throw new Error("Invalid API response: Expected an array.");
+            }
+
+            return staffList;
+        } catch{
+            throw new Error("Failed to fetch fields");
+        }
+    }
+);
+
 const staffSlice = createSlice({
     name: 'staff',
     initialState,
@@ -54,10 +75,10 @@ const staffSlice = createSlice({
 
             //update
             .addCase(updateStaff.pending, () => {
-                console.log('✅ updateStaff pending'); // 1️⃣ Log before API call
+                console.log('✅ updateStaff pending');
             })
             .addCase(updateStaff.fulfilled, (state, action: PayloadAction<Staff>) => {
-                console.log('✅ updateStaff success:', action.payload); // 2️⃣ Log API response
+                console.log('✅ updateStaff success:', action.payload);
 
                 const index = state.findIndex((staff) => staff.id === action.payload.id);
                 if (index !== -1) {
@@ -65,8 +86,28 @@ const staffSlice = createSlice({
                 }
             })
             .addCase(updateStaff.rejected, (_state, action) => {
-                console.log('❌ updateStaff failed:', action.payload as string); // 3️⃣ Log error if failed
+                console.log('❌ updateStaff failed:', action.payload as string);
+            })
+            //getAll
+            .addCase(getAllStaff.pending, () => {
+                console.log('✅ getAllStaff pending');
+            })
+            .addCase(getAllStaff.fulfilled, (state, action) => {
+                console.log("✅ getAllStaff success:", action.payload);
+
+                if (!Array.isArray(action.payload)) {
+                    console.error("❌ getAllStaff error: Payload is not an array", action.payload);
+                    return state;
+                }
+
+                return action.payload;
+            })
+
+            .addCase(getAllStaff.rejected, (_state, action) => {
+                console.log('❌ getAllStaff failed:', action.payload as string);
             });
+
+
     }
 })
 

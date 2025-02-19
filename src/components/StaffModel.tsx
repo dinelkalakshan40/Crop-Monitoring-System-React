@@ -1,14 +1,16 @@
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../store/store.ts";
-import React, {useState} from "react";
-import {saveStaff, updateStaff} from "../reducers/StaffSlice.ts";
-import {FaEraser, FaPlus, FaSave, FaSearch } from "react-icons/fa";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../store/store.ts";
+import React, {useEffect, useState} from "react";
+import {getAllStaff, saveStaff, updateStaff} from "../reducers/StaffSlice.ts";
+import {FaEraser, FaPlus, FaSave, FaSearch, FaTrash} from "react-icons/fa";
 import Staff from "../models/Staff.ts";
 import {toast} from "react-toastify";
 
 export const StaffModel = () => {
     const dispatch = useDispatch<AppDispatch>();
-   // const staffState = useSelector((state: RootState) => state.staff);
+
+    const staffState = useSelector((state: RootState) => state.staff);
+
     const [staffFormData, setStaffData] = useState<Staff>({
         id: '',
         name: '',
@@ -20,9 +22,9 @@ export const StaffModel = () => {
         fieldCode: ''
     });
 
-    // useEffect(() => {
-    //     dispatch(getAllStaff());
-    // }, [dispatch]);
+    useEffect(() => {
+        dispatch(getAllStaff());
+    }, [dispatch]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setStaffData({...staffFormData, [e.target.name]: e.target.value});
@@ -31,6 +33,7 @@ export const StaffModel = () => {
     const handleSubmit = async () => {
         await dispatch(saveStaff(staffFormData));
         setStaffData({id: '', name: '', designation: '', gender: '', dob: '', contact: '', role: '', fieldCode: ''});
+        dispatch(getAllStaff())
     };
 
     const handleUpdate = () => {
@@ -38,6 +41,7 @@ export const StaffModel = () => {
             dispatch(updateStaff(staffFormData));
             toast.success("Staff updated SuccessFully");
             setStaffData({id: '', name: '', designation: '', gender: '', dob: '', contact: '', role: '', fieldCode: ''});
+            dispatch(getAllStaff())
         }catch {
             toast.error("Failed to update StaffMember! ❌")
         }
@@ -126,7 +130,7 @@ export const StaffModel = () => {
                     <div className="mt-8 bg-gray-50 dark:bg-gray-900 p-6 rounded-lg shadow-md overflow-x-auto">
                         <table className="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
                             <thead>
-                            <tr className="bg-gray-300 text-gray-800">
+                            <tr className="g-gray-300 dark:bg-gray-700 text-gray-800 dark:text-white">
                                 <th className="p-4 border">ID</th>
                                 <th className="p-4 border">Name</th>
                                 <th className="p-4 border">Designation</th>
@@ -138,26 +142,26 @@ export const StaffModel = () => {
                                 <th className="p-4 border">Actions</th>
                             </tr>
                             </thead>
-                           {/* <tbody>
+                            <tbody>
                             {staffState.map((staff) => (
-                                <tr key={staff.id} className="border text-gray-700"
+                                <tr key={staff.id} className="border text-gray-700 dark:text-white"
                                     >
-                                    <td className="p-4 border">{staff.id}</td>
-                                    <td className="p-4 border">{staff.name}</td>
-                                    <td className="p-4 border">{staff.Designation}</td>
-                                    <td className="p-4 border">{staff.gender}</td>
-                                    <td className="p-4 border">{staff.dob}</td>
-                                    <td className="p-4 border">{staff.contact}</td>
-                                    <td className="p-4 border">{staff.role}</td>
-                                    <td className="p-4 border">{staff.fieldCode}</td>
-                                    <td className="p-4 border">
-                                        <button onClick={() => (staff.id)}
-                                                className="bg-red-500 text-white px-4 py-2 rounded-lg"><FaTrash/> Delete
+                                    <td className="p-3 border">{staff.id}</td>
+                                    <td className="p-3 border">{staff.name}</td>
+                                    <td className="p-3 border">{staff.designation}</td>
+                                    <td className="p-3 border">{staff.gender}</td>
+                                    <td className="p-3 border">{staff.dob}</td>
+                                    <td className="p-3 border">{staff.contact}</td>
+                                    <td className="p-3 border">{staff.role}</td>
+                                    <td className="p-3 border">{staff.fieldCode}</td>
+                                    <td className="p-3 border">
+                                        <button
+                                                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition duration-300 flex flex-row-reverse items-center"><FaTrash/> Delete
                                         </button>
                                     </td>
                                 </tr>
                             ))}
-                            </tbody>*/}
+                            </tbody>
                         </table>
                     </div>
                 </div>
