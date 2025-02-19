@@ -1,7 +1,7 @@
 export default interface Staff{
     id:string,
     name:string,
-    Designation:string,
+    designation:string,
     gender:string,
     dob:string
     contact:string,

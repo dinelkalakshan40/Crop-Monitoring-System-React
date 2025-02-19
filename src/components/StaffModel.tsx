@@ -1,17 +1,18 @@
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../store/store.ts";
-import {useState} from "react";
-import {saveStaff} from "../reducers/StaffSlice.ts";
-import {FaEraser, FaPlus, FaSave, FaSearch, FaTrash} from "react-icons/fa";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../store/store.ts";
+import React, {useState} from "react";
+import {saveStaff, updateStaff} from "../reducers/StaffSlice.ts";
+import {FaEraser, FaPlus, FaSave, FaSearch } from "react-icons/fa";
 import Staff from "../models/Staff.ts";
+import {toast} from "react-toastify";
 
 export const StaffModel = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const staffState = useSelector((state: RootState) => state.staff);
+   // const staffState = useSelector((state: RootState) => state.staff);
     const [staffFormData, setStaffData] = useState<Staff>({
         id: '',
         name: '',
-        Designation: '',
+        designation: '',
         gender: '',
         dob: '',
         contact: '',
@@ -29,16 +30,21 @@ export const StaffModel = () => {
 
     const handleSubmit = async () => {
         await dispatch(saveStaff(staffFormData));
-        setStaffData({id: '', name: '', Designation: '', gender: '', dob: '', contact: '', role: '', fieldCode: ''});
+        setStaffData({id: '', name: '', designation: '', gender: '', dob: '', contact: '', role: '', fieldCode: ''});
     };
 
-    // const handleUpdate = () => {
-    //     dispatch(updateStaff(formData));
-    //     setFormData({id: '', name: '', designation: '', gender: '', dob: '', contact: '', role: '', fieldCode: ''});
-    // };
+    const handleUpdate = () => {
+        try {
+            dispatch(updateStaff(staffFormData));
+            toast.success("Staff updated SuccessFully");
+            setStaffData({id: '', name: '', designation: '', gender: '', dob: '', contact: '', role: '', fieldCode: ''});
+        }catch {
+            toast.error("Failed to update StaffMember! ❌")
+        }
+    };
 
     const handleClear = () => {
-        setStaffData({id: '', name: '', Designation: '', gender: '', dob: '', contact: '', role: '', fieldCode: ''});
+        setStaffData({id: '', name: '', designation: '', gender: '', dob: '', contact: '', role: '', fieldCode: ''});
     };
 
     // const handleDelete = (id: string) => {
@@ -62,7 +68,7 @@ export const StaffModel = () => {
                             <label className="text-gray-700 dark:text-white mb-1">Search Staff:</label>
                             <input
                                 type="text"
-                                value={staffFormData.id}
+
                                 onChange={handleChange}
                                 name="id"
                                 placeholder="Search Staff..."
@@ -85,7 +91,7 @@ export const StaffModel = () => {
                                    onChange={handleChange} className="w-full p-3 border rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required/>
                             <input type="text" name="name" placeholder="Staff Name" value={staffFormData.name}
                                    onChange={handleChange} className="w-full p-3 border rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required/>
-                            <input type="text" name="designation" placeholder="Designation" value={staffFormData.Designation}
+                            <input type="text" name="designation" placeholder="Designation" value={staffFormData.designation}
                                    onChange={handleChange} className="w-full p-3 border rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required/>
                             <input type="text" name="gender" placeholder="Gender" value={staffFormData.gender}
                                    onChange={handleChange} className="w-full p-3 border rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required/>
@@ -99,13 +105,16 @@ export const StaffModel = () => {
                                    onChange={handleChange} className="w-full p-3 border rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required/>
                         </form>
                         <div className="flex justify-end gap-4 mt-6">
-                            <button onClick={handleSubmit} className="bg-green-500 text-white px-6 py-3 rounded-lg">
-                                <FaPlus/> Add
+                            <button onClick={handleSubmit}
+                                    className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg flex items-center gap-2 transition duration-300">
+                                <FaPlus/> Add Field
                             </button>
-                            <button  className="bg-yellow-500 text-white px-6 py-3 rounded-lg">
+                            <button onClick={handleUpdate}
+                                className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg flex items-center gap-2 transition duration-300">
                                 <FaSave/> Update
                             </button>
-                            <button onClick={handleClear} className="bg-gray-500 text-white px-6 py-3 rounded-lg">
+                            <button onClick={handleClear}
+                                    className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg flex items-center gap-2 transition duration-300">
                                 <FaEraser/> Clear
                             </button>
                         </div>

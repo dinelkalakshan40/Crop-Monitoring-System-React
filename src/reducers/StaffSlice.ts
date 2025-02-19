@@ -5,6 +5,7 @@ import api from "../api/ApiService.ts";
 export const initialState: Staff[] = [];
 
 
+
 export const saveStaff = createAsyncThunk(
     'staff/saveStaff',
     async (staffData: Staff) => {
@@ -18,6 +19,18 @@ export const saveStaff = createAsyncThunk(
         }
     }
 );
+export const updateStaff = createAsyncThunk(
+    'staff/updateStaff',
+    async (staffData: Staff) => {
+        console.log('updateStaff with data:', staffData);
+        try {
+            const response = await api.put(`staff/${staffData.id}`, staffData);
+            return response.data;
+        } catch (error) {
+            return console.log('error :', error)
+        }
+    }
+)
 
 const staffSlice = createSlice({
     name: 'staff',
@@ -38,6 +51,22 @@ const staffSlice = createSlice({
             .addCase(saveStaff.pending, () => {
                 console.log("Saving staff...");
             })
+
+            //update
+            .addCase(updateStaff.pending, () => {
+                console.log('✅ updateStaff pending'); // 1️⃣ Log before API call
+            })
+            .addCase(updateStaff.fulfilled, (state, action: PayloadAction<Staff>) => {
+                console.log('✅ updateStaff success:', action.payload); // 2️⃣ Log API response
+
+                const index = state.findIndex((staff) => staff.id === action.payload.id);
+                if (index !== -1) {
+                    state[index] = action.payload;
+                }
+            })
+            .addCase(updateStaff.rejected, (_state, action) => {
+                console.log('❌ updateStaff failed:', action.payload as string); // 3️⃣ Log error if failed
+            });
     }
 })
 
